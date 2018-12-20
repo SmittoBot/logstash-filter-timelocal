@@ -2,9 +2,8 @@ Gem::Specification.new do |s|
   s.name          = 'logstash-filter-timelocal'
   s.version       = '0.1.0'
   s.licenses      = ['Apache-2.0']
-  s.summary       = 'TODO: Write a short summary, because Rubygems requires one.'
-  s.description   = 'TODO: Write a longer description or delete this line.'
-  s.homepage      = 'TODO: Put your plugin''s website or public repo URL here.'
+  s.summary       = 'A logstash filter plugin to return the local hour, weekday and timezone offset from a time_event'
+  s.homepage      = 'https://github.com/SmittoBot/logstash-filter-timelocal'
   s.authors       = ['']
   s.email         = 'nsmith@missiondata.com'
   s.require_paths = ['lib']
@@ -19,5 +18,6 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
+  s.add_runtime_dependency "timezone"
   s.add_development_dependency 'logstash-devutils'
 end

@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 require "logstash/filters/timelocal"
 
 describe LogStash::Filters::Timelocal do
-  describe "Set to Hello World" do
+  describe "Don't alter message" do
     let(:config) do <<-CONFIG
       filter {
         timelocal {
@@ -15,7 +15,7 @@ describe LogStash::Filters::Timelocal do
 
     sample("message" => "some text") do
       expect(subject).to include("message")
-      expect(subject.get('message')).to eq('Hello World')
+      expect(subject.get('message')).to eq('some text')
     end
   end
 end

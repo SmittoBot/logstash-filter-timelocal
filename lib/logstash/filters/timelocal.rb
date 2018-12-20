@@ -1,5 +1,7 @@
 # encoding: utf-8
 require "logstash/filters/base"
+require "logstash/namespace"
+require "timezone"
 
 # This  filter will replace the contents of the default
 # message field with whatever you specify in the configuration.
@@ -18,10 +20,6 @@ class LogStash::Filters::Timelocal < LogStash::Filters::Base
   #
   config_name "timelocal"
 
-  # Replace the message with this value.
-  config :message, :validate => :string, :default => "Hello World!"
-
-
   public
   def register
     # Add instance variables
@@ -29,13 +27,14 @@ class LogStash::Filters::Timelocal < LogStash::Filters::Base
 
   public
   def filter(event)
-
-    if @message
-      # Replace the event message with our message as configured in the
-      # config file.
-      event.set("message", @message)
+    if !event.get('time_event').nil?
+      d = DateTime.strptime(event.get('time_event').to_s, '%Q')
+      z = Timezone[timezone.tr(" ", "_")]
+      nd = z.nil? ? d : d.new_offset(z.abbr(d))
+      event.set('time_local_hour', nd.strftime('%H'))
+      event.set('time_local_weekday', nd.strftime('%u_%a'))
+      event.set('time_local_timezone_offset', nd.zone)
     end
-
     # filter_matched should go in the last line of our successful code
     filter_matched(event)
   end # def filter
